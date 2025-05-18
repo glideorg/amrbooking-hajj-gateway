@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
 const Hero: React.FC = () => {
   const { t, language } = useLanguage();
@@ -23,24 +22,21 @@ const Hero: React.FC = () => {
 
   return (
     <div className="relative h-[500px] bg-amr-green overflow-hidden">
-      {/* Background Image Carousel */}
-      <Carousel className="h-full w-full">
-        <CarouselContent className="h-full">
-          {heroImages.map((image, index) => (
-            <CarouselItem key={index} className={`h-full ${index === currentImage ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 absolute inset-0`}>
-              <div 
-                className="absolute inset-0 bg-cover bg-center" 
-                style={{
-                  backgroundImage: `url('${image}')`,
-                }}
-              >
-                {/* Green Overlay */}
-                <div className="absolute inset-0 bg-amr-green opacity-60"></div>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        {heroImages.map((image, index) => (
+          <div 
+            key={index}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${index === currentImage ? 'opacity-100' : 'opacity-0'}`}
+            style={{
+              backgroundImage: `url('${image}')`
+            }}
+          >
+            {/* Green Overlay */}
+            <div className="absolute inset-0 bg-amr-green opacity-60"></div>
+          </div>
+        ))}
+      </div>
       
       {/* Content Overlay */}
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
