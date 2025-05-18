@@ -1,8 +1,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header: React.FC = () => {
+  const { t, language } = useLanguage();
+  
   return (
     <header className="bg-amr-white border-b border-amr-gold">
       <div className="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
@@ -20,35 +24,31 @@ const Header: React.FC = () => {
             <div>
               <h1 className="text-amr-green font-bold text-xl tracking-tight">amr<span className="text-amr-gold">booking</span></h1>
               <p className="text-xs text-amr-green">
-                <span className="mr-1">Your Gateway to Islamic Hospitality</span>
-                <span className="arabic">بوابتك للضيافة الإسلامية</span>
+                {t('gatewayToIslamic')}
               </p>
             </div>
           </div>
         </Link>
         
-        <nav className="flex items-center space-x-6">
+        <nav className={`flex items-center space-x-6 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
           <Link to="/" className="text-amr-green hover:text-amr-gold transition-colors duration-200">
-            <span className="block text-center text-sm">الصفحة الرئيسية</span>
-            <span className="block text-center">Homepage</span>
+            <span className="block text-center">{t('homepage')}</span>
           </Link>
           <Link to="/search" className="text-amr-green hover:text-amr-gold transition-colors duration-200">
-            <span className="block text-center text-sm">بحث فندق</span>
-            <span className="block text-center">Hotel Search</span>
+            <span className="block text-center">{t('hotelSearch')}</span>
           </Link>
           <Link to="/details" className="text-amr-green hover:text-amr-gold transition-colors duration-200">
-            <span className="block text-center text-sm">تفاصيل الفندق</span>
-            <span className="block text-center">Hotel Details</span>
+            <span className="block text-center">{t('hotelDetails')}</span>
           </Link>
           <Link to="/confirmation" className="text-amr-green hover:text-amr-gold transition-colors duration-200">
-            <span className="block text-center text-sm">تأكيد الحجز</span>
-            <span className="block text-center">Booking Confirmation</span>
+            <span className="block text-center">{t('bookingConfirmation')}</span>
           </Link>
         </nav>
         
         <div className="flex items-center space-x-3">
+          <LanguageSwitcher />
           <button className="bg-amr-green text-amr-white rounded-full px-4 py-1 text-sm hover:bg-opacity-90 transition-colors duration-200">
-            <span className="arabic">15:44 :المغرب</span>
+            <span className={language === 'ar' ? '' : 'arabic'}>{t('sunset')}: 15:44</span>
           </button>
           <div className="w-8 h-8 rounded-full bg-amr-gold flex items-center justify-center text-amr-green">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>

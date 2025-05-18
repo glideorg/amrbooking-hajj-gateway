@@ -99,7 +99,7 @@
   }
   
   .arabic {
-    @apply font-arabic text-right;
+    @apply font-arabic;
   }
   
   .gradient-overlay {
@@ -109,4 +109,13 @@
   .islamic-border {
     border-image: url('/islamic-border.png') 30 round;
   }
+  
+  .rtl {
+    direction: rtl;
+  }
+  
+  .ltr {
+    direction: ltr;
+  }
 }
+

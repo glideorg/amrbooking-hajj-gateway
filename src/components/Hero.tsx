@@ -1,7 +1,10 @@
 
 import React from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Hero: React.FC = () => {
+  const { t, language } = useLanguage();
+  
   return (
     <div className="relative h-[500px] bg-amr-green overflow-hidden">
       {/* Background Image */}
@@ -16,15 +19,11 @@ const Hero: React.FC = () => {
       {/* Content Overlay */}
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
         <div className="max-w-3xl animate-fade-in">
-          <h1 className="text-amr-white text-4xl md:text-5xl font-bold mb-4">
-            Discover Your Perfect Stay on Sacred Ground
+          <h1 className={`text-amr-white text-4xl md:text-5xl font-bold mb-4 ${language === 'ar' ? 'arabic' : ''}`}>
+            {t('discoverPerfectStay')}
           </h1>
-          <h2 className="text-amr-beige text-xl md:text-2xl mb-8 arabic">
-            اكتشف إقامتك المثالية على الأرض المقدسة
-          </h2>
-          <p className="text-amr-beige text-xl mb-8">
-            amrbooking: Your Gateway to Islamic Hospitality
-            <span className="block mt-1 arabic">بوابتك للضيافة الإسلامية</span>
+          <p className={`text-amr-beige text-xl mb-8 ${language === 'ar' ? 'arabic' : ''}`}>
+            {t('gatewayToIslamic')}
           </p>
         </div>
       </div>

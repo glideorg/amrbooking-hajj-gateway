@@ -1,8 +1,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Footer: React.FC = () => {
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
+  
   return (
     <footer className="bg-amr-green text-amr-white">
       <div className="container mx-auto px-4 py-8">
@@ -20,59 +24,61 @@ const Footer: React.FC = () => {
               </div>
               <div>
                 <h2 className="text-amr-white font-bold text-xl tracking-tight">amr<span className="text-amr-gold">booking</span></h2>
-                <p className="text-xs">Your Gateway to Islamic Hospitality</p>
+                <p className="text-xs">{t('gatewayToIslamic')}</p>
               </div>
             </div>
-            <p className="mt-2 text-amr-beige max-w-md">
-              Your trusted partner for Islamic and halal-friendly stays in Saudi Arabia and beyond.
+            <p className={`mt-2 text-amr-beige max-w-md ${isRTL ? 'arabic text-right' : ''}`}>
+              {isRTL 
+                ? "شريكك الموثوق للإقامات الإسلامية والمناسبة للحلال في المملكة العربية السعودية وخارجها."
+                : "Your trusted partner for Islamic and halal-friendly stays in Saudi Arabia and beyond."}
             </p>
           </div>
 
           <div className="flex items-center space-x-4">
             <div className="bg-amr-gold/20 rounded-full px-3 py-1 flex items-center">
-              <span className="text-amr-gold mr-1">Qibla:</span>
+              <span className="text-amr-gold mr-1">{t('qibla')}:</span>
               <span className="text-amr-white">289°</span>
             </div>
             <div className="bg-amr-gold/20 rounded-full px-3 py-1 flex items-center">
-              <span className="text-amr-gold mr-1">Next Prayer:</span>
+              <span className="text-amr-gold mr-1">{t('nextPrayer')}:</span>
               <span className="text-amr-white">20:11</span>
             </div>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-8 border-t border-b border-amr-white/20">
+        <div className={`grid grid-cols-1 md:grid-cols-4 gap-8 py-8 border-t border-b border-amr-white/20 ${isRTL ? 'rtl' : ''}`}>
           <div>
-            <h3 className="text-amr-gold font-semibold mb-4">About Us</h3>
+            <h3 className="text-amr-gold font-semibold mb-4">{t('aboutUs')}</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/about" className="hover:text-amr-gold transition-colors">Our Story</Link></li>
-              <li><Link to="/team" className="hover:text-amr-gold transition-colors">Our Team</Link></li>
-              <li><Link to="/careers" className="hover:text-amr-gold transition-colors">Careers</Link></li>
-              <li><Link to="/press" className="hover:text-amr-gold transition-colors">Press</Link></li>
+              <li><Link to="/about" className="hover:text-amr-gold transition-colors">{t('ourStory')}</Link></li>
+              <li><Link to="/team" className="hover:text-amr-gold transition-colors">{t('ourTeam')}</Link></li>
+              <li><Link to="/careers" className="hover:text-amr-gold transition-colors">{t('careers')}</Link></li>
+              <li><Link to="/press" className="hover:text-amr-gold transition-colors">{t('press')}</Link></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-amr-gold font-semibold mb-4">Services</h3>
+            <h3 className="text-amr-gold font-semibold mb-4">{t('services')}</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/hotels" className="hover:text-amr-gold transition-colors">Hotels</Link></li>
-              <li><Link to="/apartments" className="hover:text-amr-gold transition-colors">Apartments</Link></li>
-              <li><Link to="/umrah-packages" className="hover:text-amr-gold transition-colors">Umrah Packages</Link></li>
-              <li><Link to="/hajj-packages" className="hover:text-amr-gold transition-colors">Hajj Packages</Link></li>
+              <li><Link to="/hotels" className="hover:text-amr-gold transition-colors">{t('hotels')}</Link></li>
+              <li><Link to="/apartments" className="hover:text-amr-gold transition-colors">{t('apartments')}</Link></li>
+              <li><Link to="/umrah-packages" className="hover:text-amr-gold transition-colors">{t('umrahPackages')}</Link></li>
+              <li><Link to="/hajj-packages" className="hover:text-amr-gold transition-colors">{t('hajjPackages')}</Link></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-amr-gold font-semibold mb-4">Support</h3>
+            <h3 className="text-amr-gold font-semibold mb-4">{t('support')}</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/contact" className="hover:text-amr-gold transition-colors">Contact Us</Link></li>
-              <li><Link to="/faq" className="hover:text-amr-gold transition-colors">FAQs</Link></li>
-              <li><Link to="/help" className="hover:text-amr-gold transition-colors">Help Center</Link></li>
-              <li><Link to="/covid" className="hover:text-amr-gold transition-colors">COVID-19 Info</Link></li>
+              <li><Link to="/contact" className="hover:text-amr-gold transition-colors">{t('contactUs')}</Link></li>
+              <li><Link to="/faq" className="hover:text-amr-gold transition-colors">{t('faqs')}</Link></li>
+              <li><Link to="/help" className="hover:text-amr-gold transition-colors">{t('helpCenter')}</Link></li>
+              <li><Link to="/covid" className="hover:text-amr-gold transition-colors">{t('covid19Info')}</Link></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-amr-gold font-semibold mb-4">Download Our App</h3>
+            <h3 className="text-amr-gold font-semibold mb-4">{t('downloadApp')}</h3>
             <div className="flex space-x-2 mb-4">
               <Link to="#" className="block bg-black rounded-lg p-2 transition-transform hover:scale-105">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" className="h-8" />
@@ -81,7 +87,7 @@ const Footer: React.FC = () => {
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" className="h-8" />
               </Link>
             </div>
-            <h3 className="text-amr-gold font-semibold mb-2">Follow Us</h3>
+            <h3 className="text-amr-gold font-semibold mb-2">{t('followUs')}</h3>
             <div className="flex space-x-4">
               <Link to="#" className="text-amr-white hover:text-amr-gold transition-colors">
                 <svg width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -102,14 +108,14 @@ const Footer: React.FC = () => {
           </div>
         </div>
         
-        <div className="pt-6 flex flex-col md:flex-row justify-between items-center">
+        <div className={`pt-6 flex flex-col md:flex-row justify-between items-center ${isRTL ? 'rtl' : ''}`}>
           <p className="text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} amrbooking. All Rights Reserved.
+            &copy; {new Date().getFullYear()} amrbooking. {t('allRightsReserved')}.
           </p>
           <div className="flex flex-wrap justify-center space-x-4 text-sm">
-            <Link to="/terms" className="hover:text-amr-gold transition-colors mb-2 md:mb-0">Terms of Service</Link>
-            <Link to="/privacy" className="hover:text-amr-gold transition-colors mb-2 md:mb-0">Privacy Policy</Link>
-            <Link to="/cookies" className="hover:text-amr-gold transition-colors mb-2 md:mb-0">Cookie Policy</Link>
+            <Link to="/terms" className="hover:text-amr-gold transition-colors mb-2 md:mb-0">{t('termsService')}</Link>
+            <Link to="/privacy" className="hover:text-amr-gold transition-colors mb-2 md:mb-0">{t('privacyPolicy')}</Link>
+            <Link to="/cookies" className="hover:text-amr-gold transition-colors mb-2 md:mb-0">{t('cookiePolicy')}</Link>
           </div>
         </div>
       </div>

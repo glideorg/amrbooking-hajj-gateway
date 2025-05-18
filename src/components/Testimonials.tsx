@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TestimonialProps {
   quote: string;
@@ -11,6 +12,8 @@ interface TestimonialProps {
 }
 
 const Testimonial: React.FC<TestimonialProps> = ({ quote, author, location, arabicLocation, avatar }) => {
+  const { language } = useLanguage();
+  
   return (
     <Card className="h-full border-amr-beige">
       <CardContent className="p-6 flex flex-col h-full">
@@ -24,14 +27,15 @@ const Testimonial: React.FC<TestimonialProps> = ({ quote, author, location, arab
           </div>
           <div>
             <h4 className="font-medium text-amr-green">{author}</h4>
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{location}</span>
-              <span className="arabic">{arabicLocation}</span>
+            <div className="text-sm text-muted-foreground">
+              <span>{language === 'ar' ? arabicLocation : location}</span>
             </div>
           </div>
         </div>
         
-        <blockquote className="flex-grow italic text-gray-700 mb-4">"{quote}"</blockquote>
+        <blockquote className={`flex-grow italic text-gray-700 mb-4 ${language === 'ar' ? 'arabic text-right' : ''}`}>
+          "{quote}"
+        </blockquote>
         
         <div className="flex justify-center">
           {[...Array(5)].map((_, i) => (
@@ -46,24 +50,32 @@ const Testimonial: React.FC<TestimonialProps> = ({ quote, author, location, arab
 };
 
 const Testimonials: React.FC = () => {
+  const { t, language } = useLanguage();
+  
   const testimonials = [
     {
-      quote: "The hotel was steps away from the Haram. Prayer facilities and halal dining made our Umrah trip perfect.",
-      author: "Fatimah Ahmad",
+      quote: language === 'ar' 
+        ? "كان الفندق على بعد خطوات من الحرم. مرافق الصلاة والطعام الحلال جعلت رحلة عمرتنا مثالية"
+        : "The hotel was steps away from the Haram. Prayer facilities and halal dining made our Umrah trip perfect.",
+      author: language === 'ar' ? "فاطمة أحمد" : "Fatimah Ahmad",
       location: "Kuala Lumpur, Malaysia",
       arabicLocation: "كوالالمبور، ماليزيا",
       avatar: "https://randomuser.me/api/portraits/women/44.jpg"
     },
     {
-      quote: "Loved the seamless booking and prayer time reminders. The Qibla finder was a thoughtful touch.",
-      author: "Abdullah Rahman",
+      quote: language === 'ar'
+        ? "أحببت الحجز السلس وتذكيرات أوقات الصلاة. ميزة تحديد القبلة كانت لمسة مدروسة"
+        : "Loved the seamless booking and prayer time reminders. The Qibla finder was a thoughtful touch.",
+      author: language === 'ar' ? "عبدالله الرحمن" : "Abdullah Rahman",
       location: "Jakarta, Indonesia",
       arabicLocation: "جاكرتا، إندونيسيا",
       avatar: "https://randomuser.me/api/portraits/men/32.jpg"
     },
     {
-      quote: "Rooms were spotless, gender-segregated spa was amazing! Will definitely book again next Umrah.",
-      author: "Aisha Patel",
+      quote: language === 'ar'
+        ? "الغرف كانت نظيفة، والسبا المنفصل للجنسين كان رائعاً! سأحجز بالتأكيد مرة أخرى في العمرة القادمة"
+        : "Rooms were spotless, gender-segregated spa was amazing! Will definitely book again next Umrah.",
+      author: language === 'ar' ? "عائشة باتيل" : "Aisha Patel",
       location: "London, UK",
       arabicLocation: "لندن، المملكة المتحدة",
       avatar: "https://randomuser.me/api/portraits/women/66.jpg"
@@ -74,8 +86,9 @@ const Testimonials: React.FC = () => {
     <div className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-amr-green mb-2">What Our Guests Say</h2>
-          <p className="text-xl arabic text-amr-green">آراء نزلائنا</p>
+          <h2 className={`text-3xl font-bold text-amr-green mb-2 ${language === 'ar' ? 'arabic' : ''}`}>
+            {t('whatGuestsSay')}
+          </h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
