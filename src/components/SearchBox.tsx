@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
@@ -9,8 +10,10 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Users, Hotel } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { cn } from '@/lib/utils';
+import { toast } from "@/components/ui/use-toast";
 
 const SearchBox: React.FC = () => {
+  const navigate = useNavigate();
   const [date, setDate] = useState<DateRange | undefined>({
     from: undefined,
     to: undefined,
@@ -24,13 +27,38 @@ const SearchBox: React.FC = () => {
   today.setHours(0, 0, 0, 0);
 
   const handleSearch = () => {
+    // Validate inputs
+    if (!destination) {
+      toast({
+        title: "Please select a destination",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!date?.from || !date?.to) {
+      toast({
+        title: "Please select check-in and check-out dates",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Format dates for URL
+    const checkInDate = date.from ? format(date.from, 'yyyy-MM-dd') : '';
+    const checkOutDate = date.to ? format(date.to, 'yyyy-MM-dd') : '';
+
+    // Log search parameters
     console.log({
       destination,
-      checkInDate: date?.from,
-      checkOutDate: date?.to,
+      checkInDate,
+      checkOutDate,
       guests: guestCount,
       rooms: roomCount
     });
+
+    // Navigate to search page with parameters
+    navigate(`/search?destination=${destination}&checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${guestCount}&rooms=${roomCount}`);
   };
 
   return (

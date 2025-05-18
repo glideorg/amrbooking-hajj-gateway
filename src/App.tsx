@@ -8,6 +8,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import DestinationPage from "./pages/DestinationPage";
+import SearchResults from "./pages/SearchResults";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/search" element={<Index />} />
+            <Route path="/search" element={<SearchResults />} />
             <Route path="/details" element={<Index />} />
             <Route path="/confirmation" element={<Index />} />
             <Route path="/destination/:city" element={<DestinationPage />} />
