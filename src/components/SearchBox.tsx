@@ -19,6 +19,10 @@ const SearchBox: React.FC = () => {
   const [guestCount, setGuestCount] = useState<string>('2');
   const [roomCount, setRoomCount] = useState<string>('1');
 
+  // Get current date for disabling past dates
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const handleSearch = () => {
     console.log({
       destination,
@@ -82,6 +86,7 @@ const SearchBox: React.FC = () => {
                     selected={date}
                     onSelect={setDate}
                     numberOfMonths={2}
+                    disabled={{ before: today }}
                     className={cn("p-3 pointer-events-auto")}
                   />
                 </PopoverContent>
