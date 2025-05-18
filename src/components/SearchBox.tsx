@@ -5,31 +5,34 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Hotel } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
+import { cn } from '@/lib/utils';
 
 const SearchBox: React.FC = () => {
-  const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
-  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: undefined,
+    to: undefined,
+  });
   const [destination, setDestination] = useState<string>('');
-  const [guests, setGuests] = useState<string>('2');
-  const [isHalalFriendly, setIsHalalFriendly] = useState<boolean>(false);
+  const [guestCount, setGuestCount] = useState<string>('2');
+  const [roomCount, setRoomCount] = useState<string>('1');
 
   const handleSearch = () => {
     console.log({
       destination,
-      checkInDate,
-      checkOutDate,
-      guests,
-      isHalalFriendly
+      checkInDate: date?.from,
+      checkOutDate: date?.to,
+      guests: guestCount,
+      rooms: roomCount
     });
   };
 
   return (
     <div className="container mx-auto -mt-12 px-4 z-20 relative">
       <div className="bg-amr-white rounded-xl shadow-lg p-6 border border-amr-beige">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="space-y-1">
             <label className="block text-sm font-medium text-amr-green">
               <span className="block">Destination</span> 
@@ -53,38 +56,33 @@ const SearchBox: React.FC = () => {
               <span className="block">Check-in / Check-out</span>
               <span className="block text-xs arabic">تاريخ الوصول / المغادرة</span>
             </label>
-            <div className="flex space-x-2">
+            <div className="flex">
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full justify-start text-left">
-                    {checkInDate ? format(checkInDate, 'PP') : <span>Check-in</span>}
+                    {date?.from ? (
+                      date.to ? (
+                        <>
+                          {format(date.from, "MMM d, yyyy")} - {format(date.to, "MMM d, yyyy")}
+                        </>
+                      ) : (
+                        format(date.from, "MMM d, yyyy")
+                      )
+                    ) : (
+                      <span>Select dates</span>
+                    )}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
-                    mode="single"
-                    selected={checkInDate}
-                    onSelect={setCheckInDate}
                     initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start text-left">
-                    {checkOutDate ? format(checkOutDate, 'PP') : <span>Check-out</span>}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={checkOutDate}
-                    onSelect={setCheckOutDate}
-                    initialFocus
-                    disabled={(date) => (checkInDate ? date < checkInDate : false)}
+                    mode="range"
+                    defaultMonth={date?.from}
+                    selected={date}
+                    onSelect={setDate}
+                    numberOfMonths={2}
+                    className={cn("p-3 pointer-events-auto")}
                   />
                 </PopoverContent>
               </Popover>
@@ -93,39 +91,42 @@ const SearchBox: React.FC = () => {
 
           <div className="space-y-1">
             <label className="block text-sm font-medium text-amr-green">
-              <span className="block">Guests / Rooms</span>
-              <span className="block text-xs arabic">الضيوف / الغرف</span>
+              <span className="block">Guests</span>
+              <span className="block text-xs arabic">الضيوف</span>
             </label>
-            <Select value={guests} onValueChange={setGuests}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select guests" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1 Guest, 1 Room</SelectItem>
-                <SelectItem value="2">2 Guests, 1 Room</SelectItem>
-                <SelectItem value="3">3 Guests, 1 Room</SelectItem>
-                <SelectItem value="4">4 Guests, 1 Room</SelectItem>
-                <SelectItem value="family">2 Adults, 2 Children</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="relative">
+              <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+              <Input 
+                type="number" 
+                min="1" 
+                value={guestCount} 
+                onChange={(e) => setGuestCount(e.target.value)}
+                className="pl-9" 
+                placeholder="Number of guests"
+              />
+            </div>
           </div>
 
-          <div className="flex items-center space-x-2 pt-7">
-            <Checkbox 
-              id="halal" 
-              checked={isHalalFriendly} 
-              onCheckedChange={(checked) => setIsHalalFriendly(checked as boolean)}
-            />
-            <label htmlFor="halal" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              <div className="flex flex-col">
-                <span>Halal Friendly</span>
-                <span className="text-xs arabic">صديقة للحلال</span>
-              </div>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-amr-green">
+              <span className="block">Rooms</span>
+              <span className="block text-xs arabic">الغرف</span>
             </label>
+            <div className="relative">
+              <Hotel className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+              <Input 
+                type="number" 
+                min="1" 
+                value={roomCount} 
+                onChange={(e) => setRoomCount(e.target.value)}
+                className="pl-9" 
+                placeholder="Number of rooms"
+              />
+            </div>
           </div>
 
           <Button 
-            className="bg-amr-green hover:bg-amr-green/90 text-amr-white mt-5" 
+            className="bg-amr-green hover:bg-amr-green/90 text-amr-white mt-5 lg:col-span-4" 
             onClick={handleSearch}
           >
             Search
